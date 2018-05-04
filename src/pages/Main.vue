@@ -14,6 +14,7 @@
 			:key="index"
 			class="slide-markers"
 			:class="{'slide-markers--active': isMarkerActive(index)}"
+			@click="toogleSlide(index)"
 		>
 			<span class="slide-marker__num">{{index}}</span> <span class="slide-marker__line"></span>
 		</li>
@@ -55,7 +56,6 @@ export default {
 	created () {
 		document.addEventListener('wheel', (e) => {
 			this.scrollVAlue = e.deltaY
-			console.log(this.$refs.bla)
 			this.trackWheel()
 		})
 	},
@@ -65,7 +65,7 @@ export default {
 				setTimeout(() => {
 					this.scrollPage()
 					this.scroll = true
-				}, 300)
+				}, 400)
 				this.scroll = false
 			}
 		},
@@ -91,11 +91,11 @@ export default {
 			let randomEl = Math.floor(Math.random() * (3 - 0) + 0)
 			return arr[randomEl]
 		},
-		changeActiveMarker (id) {
-
-		},
 		isMarkerActive (id) {
 			return id === this.showSlide + 1
+		},
+		toogleSlide (id) {
+			this.showSlide = id - 1
 		}
 	},
 	computed: {
