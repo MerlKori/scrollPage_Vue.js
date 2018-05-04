@@ -44,7 +44,7 @@ export default {
 	data () {
 		return {
 			scroll: true,
-			scrollVAlue: 0,
+			scrollVAlue: -1,
 			slidesEL: ['Slide0', 'Slide1', 'Slide2', 'Slide3', 'Slide4', 'Slide5'],
 			firstSlide: 0,
 			showSlide: 0,
