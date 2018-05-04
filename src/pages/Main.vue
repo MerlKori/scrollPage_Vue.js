@@ -50,13 +50,23 @@ export default {
 			showSlide: 0,
 			scrollDirection: settingsScroll.direction.mix,
 			scrollUpAnimations: ['scroll-up', 'scroll-lf', 'scroll-rt'],
-			scrollDnAnimations: ['scroll-dn', 'scroll-lf', 'scroll-rt']
+			scrollDnAnimations: ['scroll-dn', 'scroll-lf', 'scroll-rt'],
+			touchStartPoint: '',
+			touchEndPoint: ''
 		}
 	},
 	created () {
 		document.addEventListener('wheel', (e) => {
 			this.scrollVAlue = e.deltaY
 			this.trackWheel()
+		})
+		document.addEventListener('touchstart', (event) => {
+			this.touchStartPoint = event.changedTouches[0].pageY
+		})
+
+		document.addEventListener('touchend', (event) => {
+			this.touchEndPoint = event.changedTouches[0].pageY
+			this.flippingPage()
 		})
 	},
 	methods: {
@@ -69,19 +79,32 @@ export default {
 				this.scroll = false
 			}
 		},
+		flippingPage () {
+			if (this.touchStartPoint < this.touchEndPoint) {
+				this.nextSlide()
+			} else if (this.touchStartPoint > this.touchEndPoint) {
+				this.prewSlide()
+			}
+		},
 		scrollPage () {
 			if (this.scrollVAlue > 0) {
-				if (this.showSlide < this.maxSlide) {
-					this.showSlide++
-				} else {
-					this.showSlide = this.firstSlide
-				}
+				this.nextSlide()
 			} else if (this.scrollVAlue < 0) {
-				if (this.showSlide > this.firstSlide) {
-					this.showSlide--
-				} else {
-					this.showSlide = this.maxSlide
-				}
+				this.prewSlide()
+			}
+		},
+		prewSlide () {
+			if (this.showSlide > this.firstSlide) {
+				this.showSlide--
+			} else {
+				this.showSlide = this.maxSlide
+			}
+		},
+		nextSlide () {
+			if (this.showSlide < this.maxSlide) {
+				this.showSlide++
+			} else {
+				this.showSlide = this.firstSlide
 			}
 		},
 		isSlide (index) {
