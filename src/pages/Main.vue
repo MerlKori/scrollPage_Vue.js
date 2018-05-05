@@ -93,9 +93,9 @@ export default {
 			}
 		},
 		flippingPage () {
-			if (this.touchDirection === 'bottom') {
+			if (this.touchDirection === 'top') {
 				this.nextSlide()
-			} else if (this.touchDirection === 'top') {
+			} else if (this.touchDirection === 'bottom') {
 				this.prewSlide()
 			}
 		},
