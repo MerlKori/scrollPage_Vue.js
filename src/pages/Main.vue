@@ -2,15 +2,15 @@
 <div class="wrapp">
 	<transition :name="directionAnimation"  >
 		<slide0 v-if="isSlide(0)"/>
-		<slide1 v-else-if="isSlide(1)"/>
-		<slide2 v-else-if="isSlide(2)"/>
-		<slide3 v-else-if="isSlide(3)"/>
-		<slide4 v-else-if="isSlide(4)"/>
-		<slide5 v-else-if="isSlide(5)"/>
+		<slide1 v-if="isSlide(1)"/>
+		<slide2 v-if="isSlide(2)"/>
+		<slide3 v-if="isSlide(3)"/>
+		<slide4 v-if="isSlide(4)"/>
+		<slide5 v-if="isSlide(5)"/>
 	</transition>
 	<ul class="slide-control">
 		<li
-			v-for="(index) in slidesEL.length"
+			v-for="(val ,index) in slidesEL"
 			:key="index"
 			class="slide-markers"
 			:class="{'slide-markers--active': isMarkerActive(index)}"
@@ -56,8 +56,8 @@ export default {
 		}
 	},
 	created () {
-		document.addEventListener('wheel', (e) => {
-			this.scrollVAlue = e.deltaY
+		document.addEventListener('wheel', (event) => {
+			this.scrollVAlue = event.deltaY
 			this.trackWheel()
 		})
 		document.addEventListener('touchstart', (event) => {
@@ -115,10 +115,10 @@ export default {
 			return arr[randomEl]
 		},
 		isMarkerActive (id) {
-			return id === this.showSlide + 1
+			return id === this.showSlide
 		},
 		toogleSlide (id) {
-			this.showSlide = id - 1
+			this.showSlide = id
 		}
 	},
 	computed: {
