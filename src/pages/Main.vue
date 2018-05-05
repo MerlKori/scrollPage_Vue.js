@@ -1,12 +1,12 @@
 <template>
 <div class="wrapp">
 	<transition :name="directionAnimation"  >
-		<slide0 v-if="isSlide(0)"/>
-		<slide1 v-if="isSlide(1)"/>
-		<slide2 v-if="isSlide(2)"/>
-		<slide3 v-if="isSlide(3)"/>
-		<slide4 v-if="isSlide(4)"/>
-		<slide5 v-if="isSlide(5)"/>
+		<slide0 v-if="isSlide(0)" class="pages"/>
+		<slide1 v-if="isSlide(1)" class="pages"/>
+		<slide2 v-if="isSlide(2)" class="pages"/>
+		<slide3 v-if="isSlide(3)" class="pages"/>
+		<slide4 v-if="isSlide(4)" class="pages"/>
+		<slide5 v-if="isSlide(5)" class="pages"/>
 	</transition>
 	<ul class="slide-control">
 		<li
@@ -24,7 +24,7 @@
 
 <script>
 import Slide0 from '@/components/slides/Slide_1'
-import Slide1 from '@/components/slides/Slide_2'
+import Slide1 from '@/components/slides/Carousel'
 import Slide2 from '@/components/slides/Slide_3'
 import Slide3 from '@/components/slides/Slide_4'
 import Slide4 from '@/components/slides/Slide_5'
@@ -48,11 +48,18 @@ export default {
 			slidesEL: ['Slide0', 'Slide1', 'Slide2', 'Slide3', 'Slide4', 'Slide5'],
 			firstSlide: 0,
 			showSlide: 0,
-			scrollDirection: settingsScroll.direction.mix,
+			scrollDirection: settingsScroll.direction.vertical,
 			scrollUpAnimations: ['scroll-up', 'scroll-lf', 'scroll-rt'],
 			scrollDnAnimations: ['scroll-dn', 'scroll-lf', 'scroll-rt'],
-			touchStartPoint: '',
-			touchEndPoint: ''
+			touchStart: {
+				x: '',
+				y: ''
+			},
+			touchEnd: {
+				x: '',
+				y: ''
+			},
+			touchDirection: ''
 		}
 	},
 	created () {
@@ -61,11 +68,14 @@ export default {
 			this.trackWheel()
 		})
 		document.addEventListener('touchstart', (event) => {
-			this.touchStartPoint = event.changedTouches[0].pageY
+			this.touchStart.x = event.changedTouches[0].pageX
+			this.touchStart.y = event.changedTouches[0].pageY
 		})
 
 		document.addEventListener('touchend', (event) => {
-			this.touchEndPoint = event.changedTouches[0].pageY
+			this.touchEnd.x = event.changedTouches[0].pageX
+			this.touchEnd.y = event.changedTouches[0].pageY
+			this.movementTouch()
 			this.flippingPage()
 		})
 	},
@@ -80,9 +90,9 @@ export default {
 			}
 		},
 		flippingPage () {
-			if (this.touchStartPoint < this.touchEndPoint) {
+			if (this.touchDirection === 'bottom') {
 				this.nextSlide()
-			} else if (this.touchStartPoint > this.touchEndPoint) {
+			} else if (this.touchDirection === 'top') {
 				this.prewSlide()
 			}
 		},
@@ -122,6 +132,24 @@ export default {
 		},
 		setMarkerNum (i) {
 			return ++i
+		},
+		movementTouch () {
+			let stepX = Math.abs(this.touchEnd.x - this.touchStart.x)
+			let stepY = Math.abs(this.touchEnd.y - this.touchStart.y)
+
+			if (stepX > stepY) {
+				if (this.touchEnd.x > this.touchStart.x) {
+					this.touchDirection = 'right'
+				} else {
+					this.touchDirection = 'left'
+				}
+			} else if (stepX < stepY) {
+				if (this.touchEnd.y > this.touchStart.y) {
+					this.touchDirection = 'bottom'
+				} else {
+					this.touchDirection = 'top'
+				}
+			}
 		}
 	},
 	computed: {

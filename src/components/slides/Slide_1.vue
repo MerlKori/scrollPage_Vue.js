@@ -13,6 +13,6 @@ export default {
 
 <style lang="scss" scoped>
 .page_1 {
-	background-color: yellow;
+	background-color: royalblue;
 }
 </style>
