@@ -2,7 +2,10 @@
 <div class="wrapp">
 	<transition :name="directionAnimation"  >
 		<slide0 v-if="isSlide(0)" class="pages"/>
-		<slide1 v-if="isSlide(1)" class="pages"/>
+		<!-- Carousel-->
+		<slide1
+				v-if="isSlide(1)"
+				class="pages"/>
 		<slide2 v-if="isSlide(2)" class="pages"/>
 		<slide3 v-if="isSlide(3)" class="pages"/>
 		<slide4 v-if="isSlide(4)" class="pages"/>
@@ -23,6 +26,7 @@
 </template>
 
 <script>
+import {eventBus} from '../eventBus.js'
 import Slide0 from '@/components/slides/Slide_1'
 import Slide1 from '@/components/slides/Carousel'
 import Slide2 from '@/components/slides/Slide_3'
@@ -151,6 +155,7 @@ export default {
 				} else {
 					this.touchDirection = 'left'
 				}
+				eventBus.$emit('move', this.touchDirection)
 			} else if (stepX < stepY) {
 				if (this.touchEnd.y > this.touchStart.y) {
 					this.touchDirection = 'bottom'
@@ -166,9 +171,9 @@ export default {
 		},
 		directionAnimation () {
 			if (this.scrollDirection === settingsScroll.direction.vertical) {
-				if (this.nextPrewSlide === 'prew') {
+				if (this.nextPrewSlide === 'next') {
 					return 'scroll-dn'
-				} else if (this.nextPrewSlide === 'next') {
+				} else if (this.nextPrewSlide === 'prew') {
 					return 'scroll-up'
 				}
 			} else if (this.scrollDirection === settingsScroll.direction.horizontalLf) {

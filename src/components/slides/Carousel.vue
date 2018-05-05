@@ -22,8 +22,14 @@
 </template>
 
 <script>
+import {eventBus} from '../../eventBus.js'
 export default {
 	name: 'Carousel',
+	props: {
+		touchDirection: {
+			type: String
+		}
+	},
 	data () {
 		return {
 			imgSrc: {
@@ -33,19 +39,12 @@ export default {
 			},
 			activeSlide: 0,
 			startSlide: 0,
-			slideTo: 'carousel-flipp-lf',
-			touchStartPoint: '',
-			touchEndPoint: ''
+			slideTo: 'carousel-flipp-lf'
 		}
 	},
 	created () {
-		document.addEventListener('touchstart', (event) => {
-			this.touchStartPoint = event.changedTouches[0].pageX
-		})
-
-		document.addEventListener('touchend', (event) => {
-			this.touchEndPoint = event.changedTouches[0].pageX
-			this.flippingCarousel()
+		eventBus.$on('move', (data) => {
+			this.flippingCarousel(data)
 		})
 	},
 	methods: {
@@ -68,10 +67,10 @@ export default {
 				this.activeSlide = this.startSlide
 			}
 		},
-		flippingCarousel () {
-			if (this.touchStartPoint < this.touchEndPoint) {
+		flippingCarousel (direction) {
+			if (direction === 'left') {
 				this.nextCarouselSlide()
-			} else if (this.touchStartPoint > this.touchEndPoint) {
+			} else if (direction === 'right') {
 				this.prewCarouselSlide()
 			}
 		}
