@@ -48,6 +48,7 @@ export default {
 			slidesEL: ['Slide0', 'Slide1', 'Slide2', 'Slide3', 'Slide4', 'Slide5'],
 			firstSlide: 0,
 			showSlide: 0,
+			nextPrewSlide: 'next',
 			scrollDirection: settingsScroll.direction.vertical,
 			scrollUpAnimations: ['scroll-up', 'scroll-lf', 'scroll-rt'],
 			scrollDnAnimations: ['scroll-dn', 'scroll-lf', 'scroll-rt'],
@@ -104,6 +105,7 @@ export default {
 			}
 		},
 		prewSlide () {
+			this.nextPrewSlide = 'prew'
 			if (this.showSlide > this.firstSlide) {
 				this.showSlide--
 			} else {
@@ -111,6 +113,7 @@ export default {
 			}
 		},
 		nextSlide () {
+			this.nextPrewSlide = 'next'
 			if (this.showSlide < this.maxSlide) {
 				this.showSlide++
 			} else {
@@ -128,6 +131,11 @@ export default {
 			return id === this.showSlide
 		},
 		toogleSlide (id) {
+			if (id > this.showSlide) {
+				this.nextPrewSlide = 'next'
+			} else if (id < this.showSlide) {
+				this.nextPrewSlide = 'prew'
+			}
 			this.showSlide = id
 		},
 		setMarkerNum (i) {
@@ -158,28 +166,28 @@ export default {
 		},
 		directionAnimation () {
 			if (this.scrollDirection === settingsScroll.direction.vertical) {
-				if (this.scrollVAlue > 0) {
+				if (this.nextPrewSlide === 'prew') {
 					return 'scroll-dn'
-				} else if (this.scrollVAlue < 0) {
+				} else if (this.nextPrewSlide === 'next') {
 					return 'scroll-up'
 				}
 			} else if (this.scrollDirection === settingsScroll.direction.horizontalLf) {
-				if (this.scrollVAlue > 0) {
+				if (this.nextPrewSlide === 'next') {
 					return 'scroll-lf'
-				} else if (this.scrollVAlue < 0) {
+				} else if (this.nextPrewSlide === 'prew') {
 					return 'scroll-rt'
 				}
 			} else if (this.scrollDirection === settingsScroll.direction.horizontalRt) {
-				if (this.scrollVAlue > 0) {
+				if (this.nextPrewSlide === 'next') {
 					return 'scroll-rt'
-				} else if (this.scrollVAlue < 0) {
+				} else if (this.nextPrewSlide === 'prew') {
 					return 'scroll-lf'
 				}
 			} else if (this.scrollDirection === settingsScroll.direction.mix) {
-				if (this.scrollVAlue > 0) {
+				if (this.nextPrewSlide === 'next') {
 					let direction = this.randomDirect(this.scrollUpAnimations)
 					return direction
-				} else if (this.scrollVAlue < 0) {
+				} else if (this.nextPrewSlide === 'prew') {
 					let direction = this.randomDirect(this.scrollDnAnimations)
 					return direction
 				}
