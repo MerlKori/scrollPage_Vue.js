@@ -16,7 +16,7 @@
 			:class="{'slide-markers--active': isMarkerActive(index)}"
 			@click="toogleSlide(index)"
 		>
-			<span class="slide-marker__num">{{index}}</span> <span class="slide-marker__line"></span>
+			<span class="slide-marker__num">{{setMarkerNum(index)}}</span> <span class="slide-marker__line"></span>
 		</li>
 	</ul>
 </div>
@@ -119,6 +119,9 @@ export default {
 		},
 		toogleSlide (id) {
 			this.showSlide = id
+		},
+		setMarkerNum (i) {
+			return ++i
 		}
 	},
 	computed: {
