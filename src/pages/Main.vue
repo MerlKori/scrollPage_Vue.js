@@ -1,16 +1,14 @@
 <template>
 <div class="wrapp">
-	<transition :name="directionAnimation"  >
-		<slide0 v-if="isSlide(0)" class="pages"/>
+	<transition-group :name="directionAnimation"  >
+		<slide0 v-show="isSlide(0)" class="pages" :key="0"/>
 		<!-- Carousel-->
-		<slide1
-				v-if="isSlide(1)"
-				class="pages"/>
-		<slide2 v-if="isSlide(2)" class="pages"/>
-		<slide3 v-if="isSlide(3)" class="pages"/>
-		<slide4 v-if="isSlide(4)" class="pages"/>
-		<slide5 v-if="isSlide(5)" class="pages"/>
-	</transition>
+		<slide1 v-show="isSlide(1)" class="pages" :key="1"/>
+		<slide2 v-show="isSlide(2)" class="pages" :key="2"/>
+		<slide3 v-show="isSlide(3)" class="pages" :key="3"/>
+		<slide4 v-show="isSlide(4)" class="pages" :key="4"/>
+		<slide5 v-show="isSlide(5)" class="pages" :key="5"/>
+	</transition-group>
 	<ul class="slide-control">
 		<li
 			v-for="(val ,index) in slidesEL"

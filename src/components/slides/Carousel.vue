@@ -1,16 +1,16 @@
 <template>
 <section class="carousel">
 	<ul class="carousel__slides-wrap">
-		<transition :name="slideTo">
+		<transition-group :name="slideTo">
 		<li
 			v-for="(val , key, index) in imgSrc"
 			:key="index"
-			v-if="isActiveSlide (index)"
+			v-show="isActiveSlide (index)"
 			class="carousel__slide"
 			:style="{backgroundImage: 'url(' + val + ')' }"
 		>
 		</li>
-		</transition>
+		</transition-group>
 	</ul>
 	<button
 			@click="prewCarouselSlide()"
